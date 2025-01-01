@@ -1,4 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength & Common Checker</title>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Password Strength & Common Checker</h1>
+        <form id="password-form">
+            <label for="password">Enter your password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Check</button>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
 
+    <script>
+        document.getElementById("password-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const password = document.getElementById("password").value;
+
+            fetch("/check", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ password }),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                const resultElement = document.getElementById("result");
+                resultElement.innerText = data.result;
+
+                // Add classes for success or error
+                if (data.result.includes("Strong")) {
+                    resultElement.classList.add("success");
+                    resultElement.classList.remove("error");
+                } else {
+                    resultElement.classList.add("error");
+                    resultElement.classList.remove("success");
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+<style>
     /* Resetting margin and padding */
     * {
         margin: 0;
@@ -107,3 +161,4 @@
             padding: 10px;
         }
     }
+</style>
