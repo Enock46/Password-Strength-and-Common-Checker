@@ -17,6 +17,7 @@ Security Breach Check:
 
 Project Structure
 
+
 password-checker/
 │
 ├── app.py                     # Main Flask application
